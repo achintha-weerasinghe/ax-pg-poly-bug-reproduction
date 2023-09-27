@@ -54,7 +54,7 @@ const preset: GraphileConfig.Preset = {
   ],
   plugins: [
     polyRelationsPlugin,
-    // ...paginationArgsPlugins,
+    ...paginationArgsPlugins,
   ],
   grafserv: {
     port: 10305,

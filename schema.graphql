@@ -2,7 +2,7 @@ type CollectionMovie implements Collection {
   id: UUID!
   title: String!
   type: String!
-  trailers: VideosConnection
+  trailers(first: Int = 100, offset: Int, after: String, orderBy: VideosConnectionOrderByInput): VideosConnection
 }
 
 interface Collection {
@@ -67,19 +67,29 @@ type PageInfo {
   endCursor: Cursor
 }
 
+input VideosConnectionOrderByInput {
+  id: OrderByDirection
+  url: OrderByDirection
+}
+
+enum OrderByDirection {
+  ASC
+  DESC
+}
+
 type CollectionSeason implements Collection {
   id: UUID!
   title: String!
   type: String!
   countSeasons: Int
   countEpisodes: Int
-  episodes: VideosConnection
-  trailers: VideosConnection
+  episodes(first: Int = 100, offset: Int, after: String, orderBy: VideosConnectionOrderByInput): VideosConnection
+  trailers(first: Int = 100, offset: Int, after: String, orderBy: VideosConnectionOrderByInput): VideosConnection
 }
 
 """The root query type which gives access points into the data universe."""
 type Query {
-  collections: CollectionsConnection
+  collections(first: Int = 100, offset: Int, after: String, orderBy: CollectionsConnectionOrderByInput): CollectionsConnection
 }
 
 """A connection to a list of `Collection` values."""
@@ -103,4 +113,9 @@ type CollectionsEdge {
 
   """The `Collection` at the end of the edge."""
   node: Collection
+}
+
+input CollectionsConnectionOrderByInput {
+  id: OrderByDirection
+  title: OrderByDirection
 }
