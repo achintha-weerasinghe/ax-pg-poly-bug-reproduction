@@ -2,7 +2,7 @@
 
 Steps:
 
-1. Create a db named ax_media satisfying this connection string (postgres://postgres:postgres@localhost:5432/ax_media)
+1. Create a db named ax_media satisfying this connection string (postgres://postgres:postgres@localhost:5432/ax_media) and run `db-schema.sql` file in the root.
 
 2. Run `yarn start`
 
