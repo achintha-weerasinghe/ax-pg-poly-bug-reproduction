@@ -1,4 +1,4 @@
-drop table if exists public.episodes;
+drop table if exists public.videos;
 drop table if exists public.collections;
 
 create table public.collections (
@@ -9,10 +9,11 @@ create table public.collections (
 	count_episodes int
 );
 
-create table public.episodes (
+create table public.videos (
 	id uuid primary key default gen_random_uuid(),
 	collection_id uuid not null,
 	url varchar not null,
+	type varchar not null,
 	constraint fk_collection
 		foreign key (collection_id)
 			references public.collections (id)
@@ -32,20 +33,23 @@ insert into public.collections (title, type)
 values ('Final destination', 'movie')
 returning id into id1;
 
-insert into public.episodes (collection_id, url)
+insert into public.videos (collection_id, url, type)
 values (
 	id1,
-	'https://axinom.com/trailer1'
+	'https://axinom.com/video1',
+	'trailer'
 );
-insert into public.episodes (collection_id, url)
+insert into public.videos (collection_id, url, type)
 values (
  	id1,
-	'https://axinom.com/trailer2'
+	'https://axinom.com/video2',
+	'trailer'
 );
-insert into public.episodes (collection_id, url)
+insert into public.videos (collection_id, url, type)
 values (
 	id1,
-	'https://axinom.com/trailer3'
+	'https://axinom.com/video3',
+	'trailer'
 );
 end $$;
 
@@ -57,20 +61,23 @@ insert into public.collections (title, type, count_seasons, count_episodes)
 values ('Game of thrones', 'season', 8, 80)
 returning id into id1;
 
-insert into public.episodes (collection_id, url)
+insert into public.videos (collection_id, url, type)
 values (
 	id1,
-	'https://axinom.com/episode1'
+	'https://axinom.com/video4',
+	'trailer'
 );
-insert into public.episodes (collection_id, url)
+insert into public.videos (collection_id, url, type)
 values (
  	id1,
-	'https://axinom.com/episode2'
+	'https://axinom.com/video5',
+	'episode'
 );
-insert into public.episodes (collection_id, url)
+insert into public.videos (collection_id, url, type)
 values (
 	id1,
-	'https://axinom.com/episode3'
+	'https://axinom.com/video6',
+	'episode'
 );
 end $$;
 

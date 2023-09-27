@@ -14,7 +14,7 @@ import { PgAggregatesAddConnectionAggregatesPlugin } from "@graphile/pg-aggregat
 import { NodePlugin } from "graphile-build";
 import { TagsFilePlugin } from "postgraphile/utils";
 import "postgraphile/grafserv/express/v4";
-import { polyRelationsPlugin } from "./plugins";
+import { paginationArgsPlugins, polyRelationsPlugin } from "./plugins";
 
 
 const preset: GraphileConfig.Preset = {
@@ -42,7 +42,8 @@ const preset: GraphileConfig.Preset = {
   },
   schema: {
     dontSwallowErrors: true,
-    defaultBehavior: "-delete -insert -update", // disables all queries generated based on tables adn all mutations.
+    exportSchemaSDLPath: 'schema.graphql',
+    defaultBehavior: "-delete -insert -update -query:*:*", // disables all queries generated based on tables adn all mutations.
   },
   pgServices: [
     makePgService({
@@ -52,7 +53,8 @@ const preset: GraphileConfig.Preset = {
     }),
   ],
   plugins: [
-    polyRelationsPlugin
+    polyRelationsPlugin,
+    // ...paginationArgsPlugins,
   ],
   grafserv: {
     port: 10305,
