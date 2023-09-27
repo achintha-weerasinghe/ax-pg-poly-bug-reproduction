@@ -14,6 +14,7 @@ import { PgAggregatesAddConnectionAggregatesPlugin } from "@graphile/pg-aggregat
 import { NodePlugin } from "graphile-build";
 import { TagsFilePlugin } from "postgraphile/utils";
 import "postgraphile/grafserv/express/v4";
+import { polyRelationsPlugin } from "./plugins";
 
 
 const preset: GraphileConfig.Preset = {
@@ -51,9 +52,12 @@ const preset: GraphileConfig.Preset = {
     }),
   ],
   plugins: [
+    polyRelationsPlugin
   ],
   grafserv: {
     port: 10305,
+    graphiql: true,
+    graphiqlPath: '/',
     websockets: true,
   },
   grafast: {
