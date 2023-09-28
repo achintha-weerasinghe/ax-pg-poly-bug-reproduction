@@ -1,4 +1,4 @@
-# ax-poly-poc
+# ax-pg-poly-bug-reproduction
 
 Steps:
 
