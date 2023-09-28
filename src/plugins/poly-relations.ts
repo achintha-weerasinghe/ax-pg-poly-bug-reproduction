@@ -13,18 +13,28 @@ export const polyRelationsPlugin = makeExtendSchemaPlugin((build) => {
                 ASC
                 DESC
             }
+
+            input VideosConnectionOrderByInput {
+                id: OrderByDirection
+                url: OrderByDirection
+            }
+
+            input CollectionsConnectionOrderByInput {
+                id: OrderByDirection
+                title: OrderByDirection
+            }
             
             extend type CollectionSeason {
-                episodes: VideosConnection
-                trailers: VideosConnection
+                episodes(first: Int = 100, offset: Int, after: String, orderBy: VideosConnectionOrderByInput): VideosConnection
+                trailers(first: Int = 100, offset: Int, after: String, orderBy: VideosConnectionOrderByInput): VideosConnection
             }
 
             extend type CollectionMovie {
-                trailers: VideosConnection
+                trailers(first: Int = 100, offset: Int, after: String, orderBy: VideosConnectionOrderByInput): VideosConnection
             }
 
             extend type Query {
-                collections: CollectionsConnection
+                collections(first: Int = 100, offset: Int, after: String, orderBy: CollectionsConnectionOrderByInput): CollectionsConnection
             }
         `,
         plans: {
