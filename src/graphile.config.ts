@@ -12,9 +12,8 @@ import {
 import { PgAggregatesAddConnectionGroupedAggregatesPlugin } from "@graphile/pg-aggregates/dist/AddConnectionGroupedAggregatesPlugin";
 import { PgAggregatesAddConnectionAggregatesPlugin } from "@graphile/pg-aggregates/dist/AddConnectionAggregatesPlugin";
 import { NodePlugin } from "graphile-build";
-import { TagsFilePlugin } from "postgraphile/utils";
 import "postgraphile/grafserv/express/v4";
-import { paginationArgsPlugins, polyRelationsPlugin } from "./plugins";
+import { paginationWrapPlugin, polyRelationsPlugin } from "./plugins";
 
 
 const preset: GraphileConfig.Preset = {
@@ -54,7 +53,7 @@ const preset: GraphileConfig.Preset = {
   ],
   plugins: [
     polyRelationsPlugin,
-    // ...paginationArgsPlugins,
+    paginationWrapPlugin,
   ],
   grafserv: {
     port: 10305,
