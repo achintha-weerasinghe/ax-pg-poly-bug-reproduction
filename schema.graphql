@@ -1,14 +1,30 @@
-type CollectionMovie implements Collection {
+type CollectionMovie implements Collection & Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
   id: UUID!
   title: String!
   type: String!
   trailers(first: Int = 100, offset: Int, after: String, orderBy: VideosConnectionOrderByInput): VideosConnection
 }
 
-interface Collection {
+interface Collection implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
   id: UUID!
   title: String!
   type: String!
+}
+
+"""An object with a globally unique `ID`."""
+interface Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
 }
 
 """
@@ -28,16 +44,23 @@ type VideosConnection {
 
   """Information to aid in pagination."""
   pageInfo: PageInfo!
+
+  """The count of *all* `Video` you could get from the connection."""
+  totalCount: Int!
 }
 
-type Video {
+type Video implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
   id: UUID!
   collectionId: UUID!
   url: String!
   type: String!
 
   """Reads a single `Collection` that is related to this `Video`."""
-  collection: Collection
+  collectionByCollectionId: Collection
 }
 
 """A `Video` edge in the connection."""
@@ -77,7 +100,11 @@ enum OrderByDirection {
   DESC
 }
 
-type CollectionSeason implements Collection {
+type CollectionSeason implements Collection & Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
   id: UUID!
   title: String!
   type: String!
@@ -88,7 +115,45 @@ type CollectionSeason implements Collection {
 }
 
 """The root query type which gives access points into the data universe."""
-type Query {
+type Query implements Node {
+  """
+  Exposes the root query type nested one level down. This is helpful for Relay 1
+  which can only query top level fields if they are in a particular form.
+  """
+  query: Query!
+
+  """
+  The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`.
+  """
+  nodeId: ID!
+
+  """Fetches an object given its globally unique `ID`."""
+  node(
+    """The globally unique `ID`."""
+    nodeId: ID!
+  ): Node
+
+  """Reads a single `CollectionMovie` using its globally unique `ID`."""
+  collectionMovie(
+    """
+    The globally unique `ID` to be used in selecting a single `CollectionMovie`.
+    """
+    nodeId: ID!
+  ): CollectionMovie
+
+  """Reads a single `CollectionSeason` using its globally unique `ID`."""
+  collectionSeason(
+    """
+    The globally unique `ID` to be used in selecting a single `CollectionSeason`.
+    """
+    nodeId: ID!
+  ): CollectionSeason
+
+  """Reads a single `Video` using its globally unique `ID`."""
+  video(
+    """The globally unique `ID` to be used in selecting a single `Video`."""
+    nodeId: ID!
+  ): Video
   collections(first: Int = 100, offset: Int, after: String, orderBy: CollectionsConnectionOrderByInput): CollectionsConnection
 }
 
@@ -104,6 +169,9 @@ type CollectionsConnection {
 
   """Information to aid in pagination."""
   pageInfo: PageInfo!
+
+  """The count of *all* `Collection` you could get from the connection."""
+  totalCount: Int!
 }
 
 """A `Collection` edge in the connection."""
